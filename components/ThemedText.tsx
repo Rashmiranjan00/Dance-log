@@ -1,60 +1,33 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
+import React from "react";
+import { Text, StyleProp, TextStyle } from "react-native";
+import styled from "styled-components";
 
-import { useThemeColor } from '@/hooks/useThemeColor';
+type ThemeType = "primary" | "secondary";
 
-export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
-};
-
-export function ThemedText({
-  style,
-  lightColor,
-  darkColor,
-  type = 'default',
-  ...rest
-}: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
-  return (
-    <Text
-      style={[
-        { color },
-        type === 'default' ? styles.default : undefined,
-        type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-        type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
-        style,
-      ]}
-      {...rest}
-    />
-  );
+interface IThemedText {
+  type?: ThemeType;
+  style?: StyleProp<TextStyle>;
+  children?: React.ReactElement | React.ReactNode;
 }
 
-const styles = StyleSheet.create({
-  default: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    lineHeight: 30,
-    fontSize: 16,
-    color: '#0a7ea4',
-  },
-});
+const ThemedText: React.FC<IThemedText> = ({
+  children,
+  type = "primary",
+  style,
+  ...props
+}) => (
+  <StyledText style={style} type={type} {...props}>
+    {children}
+  </StyledText>
+);
+
+const StyledText = styled(Text)<{ type: ThemeType }>`
+  ${({ theme }) => theme.typography.label_med_md};
+
+  color: ${({ theme, type }): string =>
+    type === "primary"
+      ? theme.core.content_primary
+      : theme.core.content_secondary};
+`;
+
+export default ThemedText;

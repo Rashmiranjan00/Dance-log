@@ -3,10 +3,10 @@ import styled from "styled-components";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/views/ThemedView";
 
-const WelcomeScreen = () => {
+const ExploreScreen = () => {
   return (
     <Container>
-      <Title>Welcome screen</Title>
+      <Title>Explore screen</Title>
     </Container>
   );
 };
@@ -21,4 +21,4 @@ const Title = styled(ThemedText)`
   ${({ theme }) => theme.typography.heading_special_lg};
 `;
 
-export default WelcomeScreen;
+export default ExploreScreen;
